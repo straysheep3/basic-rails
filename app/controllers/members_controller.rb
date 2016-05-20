@@ -15,23 +15,38 @@ class MembersController < ApplicationController
     @member = Member.find(params[:id])
   end
 
+  # 新規作成フォーム
   def new
-    #code
+    @member = Member.new(birthday: Date.new(1980, 1,1))
   end
 
+  # 更新フォーム
   def edit
-    #code
+    @member = Member.find(params[:id])
   end
 
   def create
-    #code
+    @member = Member.new(params[:member])
+    if @member.save
+      redirect_to @member, notice: "会員を登録しました。"
+    else
+      render "new"
+    end
   end
 
   def update
-    #code
+    @member = Member.find(params[:id])
+    @member.assign_attributes(params[:member])
+    if @member.save
+      redirect_to @member, notice: "会員情報を更新しました"
+    else
+      render "edit"
+    end
   end
 
   def destroy
-    #code
+    @member = Member.find(params[:id])
+    @member.destroy
+    redirect_to :members, notice: "会員を削除しました。"
   end
 end
